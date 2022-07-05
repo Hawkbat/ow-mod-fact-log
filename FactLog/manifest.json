@@ -1,0 +1,8 @@
+{
+  "filename": "FactLog.dll",
+  "author": "Hawkbar",
+  "name": "Fact Log",
+  "uniqueName": "Hawkbar.FactLog",
+  "version": "0.1.0",
+  "owmlVersion": "2.5.2"
+}
