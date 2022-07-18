@@ -42,23 +42,27 @@ namespace FactLog
                     {
                         var json = System.IO.File.ReadAllText(path);
                         factLogData = Newtonsoft.Json.JsonConvert.DeserializeObject<FactLogData>(json);
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                         ModHelper.Console.WriteLine(e.Message, MessageType.Error);
                     }
                 }
-                
+
                 if (factLogData == null)
                 {
                     factLogData = new FactLogData() { ProfileName = profileName, Entries = new List<FactLogDataEntry>() };
                     ModHelper.Storage.Save(factLogData, $"{profileName}{FACT_LOG_FILE_SUFFIX}");
                     ModHelper.Console.WriteLine($"Creating fresh fact log for profile {profileName}.", MessageType.Success);
-                } else
+                }
+                else
                 {
                     ModHelper.Console.WriteLine($"Loaded existing fact log for profile {profileName}.", MessageType.Success);
                 }
             };
 
             ModHelper.Menus.PauseMenu.OnInit += PauseMenu_OnInit;
+            ModHelper.Menus.PauseMenu.OnClosed += PauseMenu_OnClosed;
         }
 
         private void PauseMenu_OnInit()
@@ -68,6 +72,11 @@ namespace FactLog
             {
                 ToggleFactLog();
             };
+        }
+
+        private void PauseMenu_OnClosed()
+        {
+            if (factLogOpen) ToggleFactLog();
         }
 
         private void ToggleFactLog()
@@ -98,7 +107,7 @@ namespace FactLog
         private void Update()
         {
             if (!shipLog) return;
-            
+
             if (factLogOpen && !ModHelper.Menus.PauseMenu.IsOpen) ToggleFactLog();
 
             string realTime = DateTime.Now.ToString();
